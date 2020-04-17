@@ -1,0 +1,42 @@
+{
+  "APP": {
+    "NAME": "iTrackFlight"
+  },
+  "URL": "https://dev.admin.itrackf.raks.com.ua",
+  "MICROSERVICE": {
+    "API": "https://dev.api.itrackf.raks.com.ua/api"
+  },
+  "SERVER": {
+    "PORT": 6117
+  },
+  "SESSION": {
+    "PERIOD": 3600,
+    "CHECK_LIMIT": 10
+  },
+  "TEST": {
+    "API": {
+      "URL": "https://dev.server.itrackf.raks.com.ua/api"
+    },
+    "USER": {
+      "PREFIX": "itrack",
+      "IMAGE": "https://nvvetal.tester.raks.com.ua/tester/images/ufotos/",
+      "IMAGENOTFOUND": "https://nvvetal.tester.raks.com.ua/tester/images/ufotos/nophoto.jpg"
+    },
+    "APP": "android",
+    "VERSION": "0.1",
+    "DEVICE": {
+      "TYPE": "web",
+      "DATA": {
+        "PLATFORMS": ["desktop"],
+        "UUID": "null",
+        "MODEL": "null",
+        "VERSION": "null",
+        "MANUFACTURER": "null",
+        "ISVIRTUAL": "null",
+        "SERIAL": "null"
+      }
+    },
+    "HEADER": "sdfgkfdslk489"
+  },
+  "ORGANIZATION": 1
+}
