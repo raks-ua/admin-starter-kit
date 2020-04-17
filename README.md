@@ -1,5 +1,16 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Start App
+1) Run `yarn install`
+2) To start create symbol link "local.json" in ./config dir with target of current config
+3) Use `dev.sh` script or simple to this.
+
+###To start app with https protocol:
+Inside of your node_modules,navigate to react-dev-utils > webpackHotDevClient.js. 
+On line 63, go ahead and replace protocol with this line of code:
+protocol: window.location.protocol === 'wss'
+
+
 ## Available Scripts
 
 In the project directory, you can run:
