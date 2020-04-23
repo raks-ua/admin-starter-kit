@@ -4,10 +4,7 @@ import { createBrowserHistory } from 'history';
 import myApiRestClient from './restclient';
 import Dashboard from './dashboard';
 import authClient from './authClient';
-import { TeacherList } from "./getTeachers";
 import { UserList } from "./getAllUsers";
-import { ChapterList } from "./getAllChapters";
-import { QuestionList } from "./getAllQuestions";
 import Menu from './Menu';
 import i18nProvider from './i18nProvider';
 
@@ -24,9 +21,6 @@ const history = createBrowserHistory();
 const App = (props) => (
     <Admin locale="ru" messages={i18nProvider} authClient={authClient} restClient={myApiRestClient} dashboard={Dashboard} history={history} menu={Menu}>
         <Resource name="users" list={UserList}/>
-        <Resource name="Teachers" list={TeacherList}/>
-        <Resource name="chapters" list={ChapterList} edit={ChapterList} show={ChapterList}/>
-        <Resource name="questions" list={QuestionList} edit={QuestionList} show={QuestionList}/>
     </Admin>
 );
 

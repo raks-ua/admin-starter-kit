@@ -1,5 +1,5 @@
 import React from 'react';
-import { userTypesService, userOrganizationsService, userFlyTypesService, userPermissionsService, userPositionsService } from './authClient';
+import { userPermissionsService } from './authClient';
 import { List, Datagrid, TextField, Filter, TextInput, SelectInput } from 'admin-on-rest';
 import { translate } from "./i18nProvider";
 
@@ -27,22 +27,6 @@ const UserFilter = (props) => (
     <Filter {...props}>
       <TextInput label={translate('list.name')} source="name" />
       <UniqueSelectInput
-          label={translate('resources.users.fields.type_of_aircraft')}
-          source="flyTypes"
-          uniqueList={userFlyTypesService?.userFlyTypes} {...props} allowEmpty/>
-      <UniqueSelectInput
-          label={translate('resources.users.fields.raiting')}
-          source="userPositions"
-          uniqueList={userPositionsService?.userPositions} {...props} allowEmpty/>
-      <UniqueSelectInput
-          label={translate('resources.users.fields.type')}
-          source="type"
-          uniqueList={userTypesService?.userTypes} {...props} allowEmpty/>
-      <UniqueSelectInput
-          label={translate('resources.users.fields.organization')}
-          source="organization"
-          uniqueList={userOrganizationsService?.userOrganizations} {...props} allowEmpty/>
-      <UniqueSelectInput
           label={translate('resources.users.fields.permission')}
           source="permission"
           uniqueList={userPermissionsService?.userPermissions} {...props} allowEmpty/>
@@ -58,12 +42,7 @@ export const UserList = (props) => (
             <TextField label={translate('resources.users.fields.en')} source="en"/>
             <TextField label={translate('resources.users.fields.login')} source="login"/>
             <TextField label={translate('resources.users.fields.name')} source="name"/>
-            <TextField label={translate('resources.users.fields.license')} source="license"/>
-            <TextField label={translate('resources.users.fields.type_of_aircraft')} source="flyTypes"/>
-            <TextField label={translate('resources.users.fields.raiting')} source="userPositions"/>
-            <TextField label={translate('resources.users.fields.type')} source="userType"/>
             <TextField label={translate('resources.users.fields.permission')} source="permission"/>
-            <TextField label={translate('resources.users.fields.organization')} source="organization"/>
             {/*<TextField label={translate('resources.users.fields.action')} />*/}
         </Datagrid>
     </List>
