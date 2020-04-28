@@ -10,7 +10,7 @@ import {
 } from 'admin-on-rest';
 import { CacheService } from "./casheService";
 import { stringify } from 'query-string';
-import uuid from "uuid/v1";
+//import uuid from "uuid/v1";
 import { TEST } from './local';
 const API_URL = TEST.API.URL;
 const cacheService = new CacheService();
@@ -24,9 +24,9 @@ const cacheService = new CacheService();
 const convertRESTRequestToHTTP = (type, resource, params) => {
     let url = '';
     const options = {};
-    const requestId = uuid();
-    const sid = localStorage.getItem('sid');
-    const data = {requestId, params: {sessionId: sid, filters: params.filter, sort: params.sort}};
+    //const requestId = uuid();
+    //const sid = localStorage.getItem('sid');
+    //const data = {requestId, params: {sessionId: sid, filters: params.filter, sort: params.sort}};
 
     console.log('REQUEST', type, resource, params);
     switch (type) {
@@ -34,7 +34,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             switch (resource) {
-                case 'users': {
+                 /*case 'users': {
                     url = `${API_URL}/rpc?name=admGetAllUsers`;
                     options.method = 'POST';
                     data.name = 'admGetAllUsers';
@@ -44,34 +44,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
                     data.params.sortOrder = params.sort.order;
                     options.body = JSON.stringify(data);
                     break;
-                }
-                case 'chapters': {
-                    let params = new URLSearchParams(window.location.search);
-                    console.log('PARAMS2', params, window.location.search);
-                    if (params.get("professionId")) {
-                        url = `${API_URL}/rpc?name=admGetProfessionChapters`;
-                        data.name = 'admGetProfessionChapters';
-                        data.params.perPage = perPage;
-                        data.params.pageNum = page;
-                        data.params.professionId = params.get("professionId");
-                        options.body = JSON.stringify(data);
-                    }
-                    options.method = 'POST';
-                    break;
-                }
-                case 'questions': {
-                    let params = new URLSearchParams(window.location.search);
-                    if (params.get("chapterId")) {
-                        url = `${API_URL}/rpc?name=admGetChapterQuestions`;
-                        data.name = 'admGetChapterQuestions';
-                        data.params.perPage = perPage;
-                        data.params.pageNum = page;
-                        data.params.chapterId = params.get("chapterId");
-                        options.body = JSON.stringify(data);
-                    }
-                    options.method = 'POST';
-                    break;
-                }
+                }*/
                 default: {
                     const query = {
                         sort: JSON.stringify({field, order}),

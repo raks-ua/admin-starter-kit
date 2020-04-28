@@ -6,9 +6,6 @@
   "MICROSERVICE": {
     "API": "https://dev.api.itrackf.raks.com.ua/api"
   },
-  "SERVER": {
-    "PORT": 6117
-  },
   "SESSION": {
     "PERIOD": 3600,
     "CHECK_LIMIT": 10

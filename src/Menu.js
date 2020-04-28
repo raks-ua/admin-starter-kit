@@ -14,26 +14,14 @@ const Menu = ({ resources, onMenuTap, logout }) => (
             rightIcon={<ArrowDropRight />}
             menuItems={
                 <MenuItem
-                    primaryText={translate('question_bank')}
+                    primaryText={translate('testing2')}
                     rightIcon={<ArrowDropRight />}
                     menuItems={[
                         <MenuItemLink
-                            primaryText={translate('professions.administration')} to="/chapters/list?professionId=12" onClick={onMenuTap}
+                            primaryText={translate('professions.test1')} to="/chapters/list?testId=1" onClick={onMenuTap}
                         />,
                         <MenuItemLink
-                            primaryText={translate('professions.cabin_crew_member')} to="/chapters/list?professionId=2" onClick={onMenuTap}
-                        />,
-                        <MenuItemLink
-                            primaryText={translate('professions.flight_crew_member')} to="/chapters/list?professionId=1" onClick={onMenuTap}
-                        />,
-                        <MenuItemLink
-                            primaryText={translate('professions.maintenance_personal')} to="/chapters/list?professionId=14" onClick={onMenuTap}
-                        />,
-                        <MenuItemLink
-                            primaryText={translate('professions.non_flying_personell')} to="/chapters/list?professionId=10" onClick={onMenuTap}
-                        />,
-                        <MenuItemLink
-                            primaryText={translate('professions.occ')} to="/chapters/list?professionId=9" onClick={onMenuTap}
+                            primaryText={translate('professions.test2')} to="/chapters/list?testId=2" onClick={onMenuTap}
                         />,
                     ]}
                 />
