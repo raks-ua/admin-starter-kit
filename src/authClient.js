@@ -1,5 +1,5 @@
 import {AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS} from 'admin-on-rest';
-import {TEST, MICROSERVICE} from './local';
+import { MICROSERVICE} from './local';
 import uuid from "uuid/v1";
 
 export let userPermissionsService;
@@ -9,29 +9,11 @@ export default (type, params) => {
     if (type === AUTH_LOGIN) {
         const {username, password} = params;
         let requestId = uuid();
-        let uid = uuid();
-        let app = TEST.APP;
-        let version = TEST.VERSION;
-        let type = TEST.DEVICE.TYPE;
-        let dataPlatforms = TEST.DEVICE.DATA.PLATFORMS;
-        let dataUuid = TEST.DEVICE.DATA.UUID;
-        let dataModel = TEST.DEVICE.DATA.MODEL;
-        let dataVersion = TEST.DEVICE.DATA.VERSION;
-        let dataManufacturer = TEST.DEVICE.DATA.MANUFACTURER;
-        let dataIsVirtual = TEST.DEVICE.DATA.ISVIRTUAL;
-        let dataSerial = TEST.DEVICE.DATA.SERIAL;
         const request = new Request(MICROSERVICE.API + '/login', {
             method: 'POST',
             body: JSON.stringify({
                 name: 'loginUsername',
-                "params": {
-                    username, password, app, version, "device": {
-                        type, uid, "data": {
-                            dataPlatforms, dataUuid, dataModel, dataVersion, dataManufacturer, dataIsVirtual,
-                            dataSerial
-                        }
-                    }
-                }, requestId
+                "params": {username, password}, requestId
             }),
             headers: new Headers({'Content-Type': 'application/json'}),
         });

@@ -8,11 +8,10 @@ import {
     DELETE,
     fetchUtils,
 } from 'admin-on-rest';
-import { CacheService } from "./casheService";
-import { stringify } from 'query-string';
+import {CacheService} from "./casheService";
+import {stringify} from 'query-string';
+import {MICROSERVICE} from './local';
 //import uuid from "uuid/v1";
-import { TEST } from './local';
-const API_URL = TEST.API.URL;
 const cacheService = new CacheService();
 
 /**
@@ -31,20 +30,20 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
     console.log('REQUEST', type, resource, params);
     switch (type) {
         case GET_LIST: {
-            const { page, perPage } = params.pagination;
-            const { field, order } = params.sort;
+            const {page, perPage} = params.pagination;
+            const {field, order} = params.sort;
             switch (resource) {
-                 /*case 'users': {
-                    url = `${API_URL}/rpc?name=admGetAllUsers`;
-                    options.method = 'POST';
-                    data.name = 'admGetAllUsers';
-                    data.params.perPage = params.pagination.perPage;
-                    data.params.pageNum = params.pagination.page;
-                    data.params.sortField = params.sort.field;
-                    data.params.sortOrder = params.sort.order;
-                    options.body = JSON.stringify(data);
-                    break;
-                }*/
+                /*case 'users': {
+                   url = `${API_URL}/rpc?name=admGetAllUsers`;
+                   options.method = 'POST';
+                   data.name = 'admGetAllUsers';
+                   data.params.perPage = params.pagination.perPage;
+                   data.params.pageNum = params.pagination.page;
+                   data.params.sortField = params.sort.field;
+                   data.params.sortOrder = params.sort.order;
+                   options.body = JSON.stringify(data);
+                   break;
+               }*/
                 default: {
                     const query = {
                         sort: JSON.stringify({field, order}),
@@ -52,19 +51,19 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
                         per_page: perPage,
                         filter: JSON.stringify(params.filter),
                     };
-                    url = `${API_URL}/${resource}?${stringify(query)}`;
+                    url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
                 }
             }
             break;
         }
         case GET_ONE:
-            url = `${API_URL}/${resource}/${params.id}`;
+            url = `${MICROSERVICE.API}/${resource}/${params.id}`;
             break;
         case GET_MANY: {
             const query = {
                 filter: JSON.stringify({id: params.ids}),
             };
-            url = `${API_URL}/${resource}?${stringify(query)}`;
+            url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
             break;
         }
         case GET_MANY_REFERENCE: {
@@ -75,21 +74,21 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
                 range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
                 filter: JSON.stringify({...params.filter, [params.target]: params.id}),
             };
-            url = `${API_URL}/${resource}?${stringify(query)}`;
+            url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
             break;
         }
         case UPDATE:
-            url = `${API_URL}/${resource}/${params.id}`;
+            url = `${MICROSERVICE.API}/${resource}/${params.id}`;
             options.method = 'PUT';
             options.body = JSON.stringify(params.data);
             break;
         case CREATE:
-            url = `${API_URL}/${resource}`;
+            url = `${MICROSERVICE.API}/${resource}`;
             options.method = 'POST';
             options.body = JSON.stringify(params.data);
             break;
         case DELETE:
-            url = `${API_URL}/${resource}/${params.id}`;
+            url = `${MICROSERVICE.API}/${resource}/${params.id}`;
             options.method = 'DELETE';
             break;
         default:
@@ -116,7 +115,7 @@ const getCacheKey = (resource, filter, sort) => {
         key += filterKeys.join('-').replace(/\s/g, '_');
         // concat filter values to key
         filterKeys.forEach((propName) => {
-            key += '-'+filter[propName].toString().replace(/\s/g, "_");
+            key += '-' + filter[propName].toString().replace(/\s/g, "_");
             console.log('KEY-----', key);
         });
         return key.toLowerCase();
@@ -139,13 +138,13 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
             const key = getCacheKey(resource, params.filter, params.sort);
             json.data[resource.toLowerCase()].forEach((item, i) => item.num = i);
             let data, total;
-            cacheService.set(key, json.data[resource], params.pagination.perPage,  json.data.total, params.pagination.page - 1);
+            cacheService.set(key, json.data[resource], params.pagination.perPage, json.data.total, params.pagination.page - 1);
             data = cacheService.get(key, params.pagination.perPage, params.pagination.page - 1).data;
             total = cacheService.get(key, params.pagination.perPage, params.pagination.page - 1).total;
             console.log('TOTAL', data, total);
             return getData(data, total, params);
         default:
-            return { data: json };
+            return {data: json};
     }
 };
 
@@ -154,18 +153,22 @@ const getData = (list, total, params, customList = []) => {
         if (params.sort.order === 'ASC') {
             customList = list.sort((a, b) => {
                 if (a[params.sort.field] > b[params.sort.field]) {
-                    return 1; }
+                    return 1;
+                }
                 if (a[params.sort.field] < b[params.sort.field]) {
-                    return -1; }
+                    return -1;
+                }
                 return 0;
             })
         }
         if (params.sort.order === 'DESC') {
             customList = list.sort((a, b) => {
                 if (a[params.sort.field] > b[params.sort.field]) {
-                    return -1; }
+                    return -1;
+                }
                 if (a[params.sort.field] < b[params.sort.field]) {
-                    return 1; }
+                    return 1;
+                }
                 return 0;
             })
         }
