@@ -32,31 +32,33 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
         case GET_LIST: {
             const {page, perPage} = params.pagination;
             const {field, order} = params.sort;
-            switch (resource) {
-                /*case 'users': {
-                   url = `${API_URL}/rpc?name=admGetAllUsers`;
-                   options.method = 'POST';
-                   data.name = 'admGetAllUsers';
-                   data.params.perPage = params.pagination.perPage;
-                   data.params.pageNum = params.pagination.page;
-                   data.params.sortField = params.sort.field;
-                   data.params.sortOrder = params.sort.order;
-                   options.body = JSON.stringify(data);
-                   break;
-               }*/
+            const query = {
+                sort: JSON.stringify({field, order}),
+                page,
+                per_page: perPage,
+                filter: JSON.stringify(params.filter),
+            };
+            url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
+            /*switch (resource) {
+              se 'users': {
+                 url = `${API_URL}/rpc?name=admGetAllUsers`;
+                 options.method = 'POST';
+                 data.name = 'admGetAllUsers';
+                 data.params.perPage = params.pagination.perPage;
+                 data.params.pageNum = params.pagination.page;
+                 data.params.sortField = params.sort.field;
+                 data.params.sortOrder = params.sort.order;
+                 options.body = JSON.stringify(data);
+                 break;
+             }
                 default: {
-                    const query = {
-                        sort: JSON.stringify({field, order}),
-                        page,
-                        per_page: perPage,
-                        filter: JSON.stringify(params.filter),
-                    };
-                    url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
+
                 }
-            }
+            }*/
             break;
         }
         case GET_ONE:
+            console.log('getting one')
             url = `${MICROSERVICE.API}/${resource}/${params.id}`;
             break;
         case GET_MANY: {
@@ -64,6 +66,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
                 filter: JSON.stringify({id: params.ids}),
             };
             url = `${MICROSERVICE.API}/${resource}?${stringify(query)}`;
+            console.log(url);
             break;
         }
         case GET_MANY_REFERENCE: {
@@ -105,7 +108,13 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
  * @returns {string}
  */
 const getCacheKey = (resource, filter, sort) => {
-    console.log('SORT--', sort);
+
+    if (sort === undefined) {
+        sort = {field: 'id', order: 'DESC'};
+    }
+    if (filter === undefined) {
+        filter = {};
+    }
     if (Object.keys(filter).length) {
         // `${resource}-${filterNameA}-${filterNameB}-${filterNameC}-${filterValueA}-${filterValueB}-${filterValueC}`
         let key = `${resource}-${sort['field']}-${sort.order}-`;
@@ -133,9 +142,12 @@ const getCacheKey = (resource, filter, sort) => {
  */
 const convertHTTPResponseToREST = (response, type, resource, params) => {
     const {json} = response;
+    console.log('convertHTTPResponseToREST', json, type);
     switch (type) {
         case GET_LIST:
+            console.log(resource, json.data, json.data[resource.toLowerCase()], params);
             const key = getCacheKey(resource, params.filter, params.sort);
+            console.log(key);
             json.data[resource.toLowerCase()].forEach((item, i) => item.num = i);
             let data, total;
             cacheService.set(key, json.data[resource], params.pagination.perPage, json.data.total, params.pagination.page - 1);
@@ -143,8 +155,56 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
             total = cacheService.get(key, params.pagination.perPage, params.pagination.page - 1).total;
             console.log('TOTAL', data, total);
             return getData(data, total, params);
-        default:
+        case GET_MANY_REFERENCE:
+
+            var jsonData = json.data.map(function (dic) {
+                var interDic = Object.assign(
+                    {id: dic.id},
+                    dic.attributes,
+                    dic.meta
+                );
+                if (dic.relationships) {
+                    Object.keys(dic.relationships).forEach(function (key) {
+                        var keyString = key + "_id";
+                        if (dic.relationships[key].data) {
+                            //if relationships have a data field --> assume id in data field
+                            interDic[keyString] = dic.relationships[key].data.id;
+                        } else if (dic.relationships[key].links) {
+                            //if relationships have a link field
+                            var link = dic.relationships[key].links["self"];
+                            this(link).then(function (response) {
+                                interDic[key] = {
+                                    data: response.json.data,
+                                    count: response.json.data.length
+                                };
+                                interDic["count"] = response.json.data.length;
+                            });
+                        }
+                    });
+                }
+                return interDic;
+            });
+            return {data: json.data, total: json.meta["total"]};
+        case GET_MANY:
+            console.log('GET_MANY_REFERENCE', json.data);
+            jsonData = json.data[resource].map(function (obj) {
+                console.log(obj);
+
+                return Object.assign({id: obj.id}, obj);
+            });
+            console.log(jsonData);
+            return {data: jsonData};
+
+        case UPDATE:
+        case CREATE:
+            return {
+                data: Object.assign({id: json.data.id}, json.data.attributes)
+            };
+        case DELETE:
             return {data: json};
+        default:
+            console.log('Def', json)
+            return {data: json.data};
     }
 };
 
@@ -208,26 +268,21 @@ const getData = (list, total, params, customList = []) => {
 export default (type, resource, params) => {
     const {fetchJson} = fetchUtils;
     const {url, options} = convertRESTRequestToHTTP(type, resource, params);
-    const key = getCacheKey(resource, params.filter, params.sort);
-    console.log('CACHEKEY', key);
-    const currentCacheFilteredList = cacheService.get(key, params.pagination.perPage, params.pagination.page - 1);
-    if (currentCacheFilteredList) {
-        return Promise.resolve(getData(currentCacheFilteredList.data, currentCacheFilteredList.total, params));
-    } else {
-        return fetchJson(url, options)
-            .then(response => {
-                // Handling errors from server
-                if (response.json.code < 200 || response.json.code >= 300) {
-                    return Promise.reject({
-                        message: {
-                            status: response.json.code,
-                            message: response.json.message
-                        }
-                    });
-                }
-                return response;
-            })
-            .then(response => convertHTTPResponseToREST(response, type, resource, params))
-    }
+    console.log('2', url, options);
+    return fetchJson(url, options)
+        .then(response => {
+            console.log('response', response)
+            // Handling errors from server
+            if (response.json.code < 200 || response.json.code >= 300) {
+                return Promise.reject({
+                    message: {
+                        status: response.json.code,
+                        message: response.json.message
+                    }
+                });
+            }
+            return response;
+        })
+        .then(response => convertHTTPResponseToREST(response, type, resource, params))
 
 };

@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'admin-on-rest';
 import { translate } from "./i18nProvider";
 import LocaleSwitcher from './LocaleSwitcher';
-import MenuItem from "material-ui/MenuItem";
+/*import MenuItem from "material-ui/MenuItem";
 
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
+import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";*/
 
 const Menu = ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItem
+       {/* <MenuItem
             primaryText={translate('testing')}
             rightIcon={<ArrowDropRight />}
             menuItems={
@@ -26,11 +26,17 @@ const Menu = ({ resources, onMenuTap, logout }) => (
                     ]}
                 />
             }
+        />*/}
+        <MenuItemLink
+            primaryText={translate('resources.users.nameAll')} to="/admin_users" onClick={onMenuTap}
         />
         <MenuItemLink
-            primaryText={translate('resources.users.name')} to="/users" onClick={onMenuTap}
+            primaryText={translate('resources.apps.nameAll')} to="/apps" onClick={onMenuTap}
         />
-            <LocaleSwitcher />
+        <MenuItemLink
+            primaryText={translate('resources.messageTemplates.nameAll')} to="/message_templates" onClick={onMenuTap}
+        />
+            <LocaleSwitcher label={translate('language')} />
         {logout}
     </div>
 );

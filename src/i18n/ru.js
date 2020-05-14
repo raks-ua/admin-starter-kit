@@ -4,8 +4,12 @@ export const messages = {
     simple: {
         action: {
             close: 'Close',
-            resetViews: 'Reset views',
+            resetViews: 'Перезавантажити вигляд',
         },
+        buttons: {
+            editButton: 'Редактировать',
+            deleteButton: 'Удалить'
+        }
     },
     ...russianMessages,
     resources: {
@@ -26,31 +30,31 @@ export const messages = {
                 actions: 'Действие'
             },
         },
+        apps: {
+            name: 'приложение',
+            nameAll: 'Все приложения',
+            fields: {
+                id: 'ID',
+                app_id: 'ID приложения',
+                name: 'Имя',
+                created: 'Создано'
+            },
+        },
+        messageTemplates: {
+            name: 'Шаблоны сообщений',
+            nameAll: 'Все шаблоны сообщений',
+            fields: {
+                id: 'ID',
+                key: 'Ключ',
+                template: 'Шаблон',
+                data: 'Информация',
+                language: 'Язык',
+                app: 'Приложение',
+                created: 'Создано',
+            },
+        },
     },
     language: 'Язык',
-    testing: 'Тестирование',
-    question_bank: 'База вопросов',
-    professions: {
-        administration: 'Администрация',
-        cabin_crew_member: 'Бортпроводники',
-        flight_crew_member: 'FLIGHT CREW MEMBER',
-        maintenance_personal: 'Персонал КИТО',
-        non_flying_personell: 'Non Flying Personell',
-        occ: 'Лётные диспетчеры'
-    },
-    profession_chapters: 'Profession Chapters',
-    chapters_fields: {
-        subject_names: 'SUBJECT NAMES',
-        qws_qnty: 'QWS QNTY',
-        actions: 'ДЕЙСТВИЕ'
-    },
-    chapter_questions: 'Chapter Questions',
-    question_fields: {
-        questions: 'QUESTIONS',
-        answer_count: 'ANSWER COUNT',
-        position: 'POSITION',
-        action: 'Действие'
-    },
     list: {
         search: 'Поиск',
         name: 'Имя'

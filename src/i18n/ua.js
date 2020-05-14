@@ -6,6 +6,10 @@ export const messages = {
             close: 'Close',
             resetViews: 'Reset views',
         },
+        buttons: {
+            editButton: 'Редагувати',
+            deleteButton: 'Видалити'
+        }
     },
     ...ukrainianMessages,
     resources: {
@@ -15,42 +19,40 @@ export const messages = {
             fields: {
                 id: 'ID',
                 en: 'Англ',
-                login: 'Ім\'я',
-                name: "Прізвище",
+                login: 'Логін',
+                name: 'П.І.Б',
                 license: 'Свідоцтво',
-                type_of_aircraft: 'Тип ПС',
-                raiting: 'Рейтинг',
                 type: 'Тип',
                 permission: 'Дозвіл',
                 organization: 'Організація',
                 actions: 'Дія'
             },
         },
+        apps: {
+            name: 'додаток',
+            nameAll: 'Всі додатки',
+            fields: {
+                id: 'ID',
+                app_id: 'ID додатка',
+                name: 'Ім\'я',
+                created: 'Створено'
+            },
+        },
+        messageTemplates: {
+            name: 'Шаблони повідомлень',
+            nameAll: 'Всі шаблони повідомлень',
+            fields: {
+                id: 'ID',
+                key: 'Ключ',
+                template: 'Шаблон',
+                data: 'Інформація',
+                language: 'Мова',
+                app: 'Додаток',
+                created: 'Створено',
+            },
+        },
     },
     language: 'Мова',
-    testing: 'Тестування',
-    question_bank: 'База питань',
-    professions: {
-        administration: 'Адміністрація',
-        cabin_crew_member: 'Бортпровідники',
-        flight_crew_member: 'FLIGHT CREW MEMBER',
-        maintenance_personal: 'Персонал КІТО',
-        non_flying_personell: 'Non Flying Personell',
-        occ: 'Льотні диспетчери'
-    },
-    profession_chapters: 'Profession Chapters',
-    chapters_fields: {
-        subject_names: 'SUBJECT NAMES',
-        qws_qnty: 'QWS QNTY',
-        actions: 'ДІЯ'
-    },
-    chapter_questions: 'Chapter Questions',
-    question_fields: {
-        questions: 'QUESTIONS',
-        answer_count: 'ANSWER COUNT',
-        position: 'POSITION',
-        action: 'ДІЯ'
-    },
     list: {
         search: 'Пошук',
         name: 'Ім\'я'

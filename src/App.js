@@ -1,12 +1,21 @@
 import React from 'react';
-import { Admin, Resource } from 'admin-on-rest';
-import { createBrowserHistory } from 'history';
+import {Admin, Resource} from 'admin-on-rest';
+import {createBrowserHistory} from 'history';
 import myApiRestClient from './restclient';
 import Dashboard from './dashboard';
 import authClient from './authClient';
-import { UserList } from "./getAllUsers";
+import {UserList} from "./resources/getAllUsers";
+import {AppList, AppEdit, AppCreate, AppDelete} from "./resources/apps";
+import {
+    MessageTemplateCreate,
+    MessageTemplateDelete,
+    MessageTemplateEdit,
+    MessageTemplateList
+} from "./resources/messageTemplates";
 import Menu from './Menu';
 import i18nProvider from './i18nProvider';
+import { APP} from './local';
+
 
 var originalLog = console.error;
 console.error = function log(...args) {
@@ -19,8 +28,19 @@ console.error = function log(...args) {
 const history = createBrowserHistory();
 
 const App = (props) => (
-    <Admin locale="ru" messages={i18nProvider} authClient={authClient} restClient={myApiRestClient} dashboard={Dashboard} history={history} menu={Menu}>
-        <Resource name="users" list={UserList}/>
+    <Admin locale="ru"
+           messages={i18nProvider}
+           authClient={authClient}
+           restClient={myApiRestClient}
+           dashboard={Dashboard}
+           history={history}
+           menu={Menu}
+          title={APP.NAME}
+    >
+        <Resource name="admin_users" list={UserList}/>
+        <Resource name="apps" list={AppList} edit={AppEdit} create={AppCreate} remove={AppDelete}/>
+        <Resource name="message_templates" list={MessageTemplateList} edit={MessageTemplateEdit} create={MessageTemplateCreate} remove={MessageTemplateDelete}/>
+
     </Admin>
 );
 

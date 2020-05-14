@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/core/styles';
 import { changeLocale as changeLocaleAction, refreshView as refreshViewAction } from 'admin-on-rest';
+import {translate} from "./i18nProvider";
 
 const MyButton = styled(Button)({
     height: 48,
@@ -30,8 +31,8 @@ class LocaleSwitcher extends Component {
         console.log('PROPS', this.props);
         return (
             <div>
-                <MyButton>Language</MyButton>
-                <div ></div>
+                <MyButton>{translate('language')}</MyButton>
+                <div></div>
                 <Button onClick={this.switchToEnglish}>en</Button>
                 <Button onClick={this.switchToRussian}>ru</Button>
                 <Button onClick={this.switchToUkrainian}>ua</Button>
