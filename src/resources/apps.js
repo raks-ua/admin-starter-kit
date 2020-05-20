@@ -14,7 +14,9 @@ import {translate} from "../i18nProvider";
 import ApproveButton from "../buttons/Approve";
 //import EditButton from "../buttons/Edit";
 //import DeleteButton from "../buttons/Delete";
+import Icon from 'material-ui/svg-icons/social/person';
 
+export const AppIcon = Icon;
 const AppIdFilter = (props) => (
     <Filter {...props}>
         <TextInput label={translate('resources.apps.fields.app_id')} title="app_id" source="app_id" alwaysOn/>

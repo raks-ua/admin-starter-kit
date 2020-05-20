@@ -32,6 +32,7 @@ export const MessageTemplateList = (props) => (
             <TextField label={translate('resources.messageTemplates.fields.id')} source="id"/>
             <TextField label={translate('resources.messageTemplates.fields.key')} source="key"/>
             <TextField label={translate('resources.messageTemplates.fields.template')} source="template"/>
+            <TextField label={translate('resources.messageTemplates.fields.type')} source="type"/>
             <TextField label={translate('resources.messageTemplates.fields.data')} source="data"/>
             <TextField label={translate('resources.messageTemplates.fields.language')} source="language"/>
             <ReferenceField label={translate('resources.messageTemplates.fields.app')} source="app_id" reference="apps">
@@ -48,7 +49,7 @@ export const MessageTemplateList = (props) => (
 const MessageTemplateEditTitle = ({record}) =>
     <span>{translate('simple.action.edit')}&nbsp;
         {translate('resources.messageTemplates.name')}&nbsp;
-        {record ? `"${record.name}"` : ''}
+        {record ? `"${record.key}"` : ''}
     </span>;
 
 export const MessageTemplateEdit = (props) => (
@@ -58,8 +59,8 @@ export const MessageTemplateEdit = (props) => (
                 <SelectInput label={translate('resources.messageTemplates.fields.app_id')} source="name"/>
             </ReferenceInput>
             <TextInput label={translate('resources.messageTemplates.fields.key')} source="key"/>
-            <SelectInput label={translate('resources.messageTemplates.fields.language')} choices={locales}/>
-            <SelectInput label={translate('resources.messageTemplates.fields.type')} choices={message_types}/>
+            <SelectInput label={translate('resources.messageTemplates.fields.language')} source="language" choices={locales}/>
+            <SelectInput label={translate('resources.messageTemplates.fields.type')}  source="type" choices={message_types}/>
             <LongTextInput label={translate('resources.messageTemplates.fields.template')} source="template"/>
             <LongTextInput label={translate('resources.messageTemplates.fields.data')} source="data"/>
         </SimpleForm>
@@ -82,8 +83,8 @@ export const MessageTemplateCreate = (props) => (
 );
 
 const MessageTemplateDeleteTitle = ({record}) => <span>
-    {translate('resources.messageTemplates.delete')}&nbsp;
-    {record && `${record.name}`}
+    {translate('simple.buttons.deleteButton')}&nbsp;
+    {record && `${record.key}`}
 </span>;
 
 export const MessageTemplateDelete = (props) => <Delete {...props} title={<MessageTemplateDeleteTitle/>}/>;

@@ -5,7 +5,7 @@ import myApiRestClient from './restclient';
 import Dashboard from './dashboard';
 import authClient from './authClient';
 import {UserList} from "./resources/getAllUsers";
-import {AppList, AppEdit, AppCreate, AppDelete} from "./resources/apps";
+import {AppList, AppEdit, AppCreate, AppDelete, AppIcon} from "./resources/apps";
 import {
     MessageTemplateCreate,
     MessageTemplateDelete,
@@ -36,6 +36,7 @@ const App = (props) => (
            history={history}
            menu={Menu}
           title={APP.NAME}
+           icon={AppIcon}
     >
         <Resource name="admin_users" list={UserList}/>
         <Resource name="apps" list={AppList} edit={AppEdit} create={AppCreate} remove={AppDelete}/>
