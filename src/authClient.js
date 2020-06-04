@@ -1,5 +1,5 @@
 import {AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS} from 'admin-on-rest';
-import { MICROSERVICE} from './local';
+import {MICROSERVICE} from './local';
 import uuid from "uuid/v1";
 
 export let userPermissionsService;
@@ -61,6 +61,8 @@ export default (type, params) => {
     if (type === AUTH_LOGOUT) {
         console.log('AUTHLOGOUT', params);
         localStorage.removeItem('sid');
+        localStorage.removeItem('lang');
+        localStorage.removeItem('appId');
         return Promise.resolve();
     }
     if (type === AUTH_ERROR) {
@@ -72,9 +74,34 @@ export default (type, params) => {
         return Promise.resolve();
     }
     if (type === AUTH_CHECK) {
-        const sid = localStorage.getItem('sid');
-        console.log('CHECK', !!sid);
-        return sid ? Promise.resolve(sid) : Promise.reject();
+        let sid;
+       // return Promise.resolve('12');
+        if (window.location.search !== '') {
+            const urlParams = new URLSearchParams(window.location.search);
+            sid = urlParams.get('sid');
+        } else {
+            sid = localStorage.getItem('sid');
+        }
+        const request = new Request(MICROSERVICE.API + '/session/touch', {
+            method: 'POST',
+            body: JSON.stringify({
+                sid: sid,
+            }),
+            headers: new Headers({'Content-Type': 'application/json'}),
+        });
+        return fetch(request)
+            .then(response => response.json())
+            .then((result) => {
+                    console.log('ERROR', result);
+                    if (result.code < 200 || result.code >= 300) {
+                        return Promise.reject();
+                    }
+                    if (result.data.userId) {
+                        localStorage.setItem('appId', result.data.userId)};
+                    return Promise.resolve(result.data.sid)
+                }
+            )
+
     }
     if (type === AUTH_GET_PERMISSIONS) {
         const role = localStorage.getItem('role');
@@ -82,7 +109,8 @@ export default (type, params) => {
     }
 
     return Promise.reject('Unknown method');
-};
+}
+;
 
 export function withActions(wrapperActions) {
     console.log(wrapperActions)

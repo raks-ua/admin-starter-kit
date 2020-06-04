@@ -38,8 +38,8 @@ const App = (props) => (
           title={APP.NAME}
            icon={AppIcon}
     >
-        <Resource name="admin_users" list={UserList}/>
-        <Resource name="apps" list={AppList} edit={AppEdit} create={AppCreate} remove={AppDelete}/>
+      {/*  <Resource name="admin_users" list={UserList}/>
+        <Resource name="apps" list={AppList} edit={AppEdit} create={AppCreate} remove={AppDelete}/>*/}
         <Resource name="message_templates" list={MessageTemplateList} edit={MessageTemplateEdit} create={MessageTemplateCreate} remove={MessageTemplateDelete}/>
 
     </Admin>
